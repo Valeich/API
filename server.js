@@ -5,10 +5,10 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 
 const app = express();
-const SECRET_KEY = 'YOUR_SECRET_KEY';
+const SECRET_KEY = 'secret';
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/tes', { 
+mongoose.connect('mongodb://127.0.0.1:27017/testapi', { 
     useUnifiedTopology: true
 });
 
@@ -52,6 +52,18 @@ app.post('/login', async (req, res) => {
         res.send({ token });
     } catch (error) {
         res.status(500).send({ error: error.message });
+    }
+});
+
+
+//User Information
+app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find().select('-password'); // Excluding the password
+        res.json(users);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
     }
 });
 
