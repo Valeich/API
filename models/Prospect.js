@@ -1,37 +1,46 @@
 const sequelize = require('../config/database');
 const Sequelize = require('sequelize');
-const Roles = require('./Roles');
+const express = require('express');
+const User = require('./User');
+const UserRole = require('./UserRole');
 
-const User = sequelize.define('users', {
+
+const Prospect = sequelize.define('prospects', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    uuid: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+    user_roles_id: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: UserRole,
+            key: 'id',
+        }
     },
-    name: {
+    source: {
         type: Sequelize.STRING,
         allowNull: true,
     },
-    photo: {
+    prospect_name: {
         type: Sequelize.STRING,
         allowNull: true,
     },
-    username: {
+    prospect_contact_number: {
         type: Sequelize.STRING,
         allowNull: true,
     },
-    email: {
+    prospect_email: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
+        allowNull: true,
     },
-    password: {
+    prospect_type: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
+    },
+    assigned_status: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
     },
     created_at: {
         type: Sequelize.DATE,
@@ -45,17 +54,9 @@ const User = sequelize.define('users', {
         type: Sequelize.DATE,
         allowNull: true,
     },
-    assigned:{
-        type: Sequelize.INTEGER,
-        allowNull: true,
-    },
-    status:{
-        type: Sequelize.INTEGER,
-        allowNull: true,
-    },
 }, {
     timestamps: false,
-    paranoid: true,
 });
 
-module.exports = User;
+
+module.exports = Prospect;
